@@ -1,0 +1,7 @@
+void main()
+{ 
+// JUST A LINE COMMENT
+	int sum; 
+	sum = 35 /*JUST A BLOCK COMMENT*/+ 400; 
+	cout << sum;
+}
