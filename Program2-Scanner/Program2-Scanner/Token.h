@@ -1,6 +1,7 @@
 #pragma once
-
+#include "Debug.h"
 #include <string>
+#include <iostream>
 
 enum TokenType {
 	// Reserved Words:
@@ -38,8 +39,8 @@ public:
 	std::string GetLexeme() const {
 		return this->mLexeme;
 	};
-	void CheckReserved();
 private:
+	void CheckReserved();
 	TokenType mType;
 	std::string mLexeme;
 };
