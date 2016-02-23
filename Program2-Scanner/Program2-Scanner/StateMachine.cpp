@@ -3,7 +3,7 @@
 
 StateMachineClass::StateMachineClass()
 	: mCurrentState(START_STATE) {
-
+	MSG("INITIALIZING STATEMACHINECLASS");
 	// First, initialize all the mLegalMoves to CANTMOVE_STATE
 	// Then, reset the mLegalMoves that are legitimate
 	unsigned int i;
@@ -102,7 +102,6 @@ StateMachineClass::StateMachineClass()
 MachineState StateMachineClass::UpdateState(
 		char currentCharacter, 
 		TokenType& correspondingTokenType) {
-
 	// convert the input character into an input character type 
 	CharacterType charType = BAD_CHAR;
 	if (isalpha(currentCharacter)) {
@@ -171,6 +170,9 @@ MachineState StateMachineClass::UpdateState(
 
 	//std::cout << "tokentype = " << correspondingTokenType << std::endl;
 	//std::cout << "mCurrentState = " << this->mCurrentState << std::endl;
-
 	return this->mCurrentState;
+}
+
+void StateMachineClass::ResetState() {
+	this->mCurrentState = START_STATE;
 }

@@ -27,6 +27,7 @@ public:
 	MachineState UpdateState(
 		char currentCharacter, 
 		TokenType& correspondingTokenType);
+	void ResetState();
 private:
 	MachineState mCurrentState;
 

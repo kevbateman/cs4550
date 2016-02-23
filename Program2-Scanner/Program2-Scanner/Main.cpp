@@ -2,6 +2,7 @@
 #include "Scanner.h"
 #include "Debug.h"
 #include "Symbol.h"
+#include "Node.h"
 
 #include <iostream>
 #include <iomanip>
@@ -9,62 +10,95 @@
 
 int main() {
 	MSG("STARTING MAIN FUNCTION");
+
+
+	// SCANNERCLASS TESTCODE
 	ScannerClass my_scanner("input.txt");
 
 	TokenClass my_token;
 
 	do {
-		my_token = my_scanner.GetNextToken();
-		std::cout << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
+	my_token = my_scanner.GetNextToken();
+	std::cout << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
 	} while (my_token.GetTokenType() != ENDFILE_TOKEN);
 
-	//SymbolTableClass table;
-	//MSG("Adding 'FIRST'")
+
+
+	// SYMBOLTABLECLASS TESTCODE
+	/*SymbolTableClass table;
+	MSG("Adding 'FIRST'")
+	table.AddEntry("FIRST");
+
+	MSG("Adding 'SECOND'")
+	table.AddEntry("SECOND");
+
+	MSG("Adding 'THIRD'")
+	table.AddEntry("THIRD");
+
+	//MSG("ADDING 'FIRST'");
 	//table.AddEntry("FIRST");
 
-	//MSG("Adding 'SECOND'")
-	//table.AddEntry("SECOND");
+	MSG("Checking if 'SECOND' exists:");
+	bool second_exists = table.Exists("SECOND");
+	if (second_exists) {
+	MSG("true");
+	}
+	else {
+	MSG("false");
+	}
 
-	//MSG("Adding 'THIRD'")
-	//table.AddEntry("THIRD");
+	MSG("Getting number of added variables:");
+	int var_count = table.GetCount();
+	MSG(var_count);
 
-	////MSG("ADDING 'FIRST'");
-	////table.AddEntry("FIRST");
+	MSG("Getting index of 'SECOND':");
+	int second_index = table.GetIndex("SECOND");
+	MSG(second_index);
 
-	//MSG("Checking if 'SECOND' exists:");
-	//bool second_exists = table.Exists("SECOND");
-	//if (second_exists) {
-	//	MSG("true");
-	//}
-	//else {
-	//	MSG("false");
-	//}
+	MSG("Getting index of 'FOURTH':");
+	int fourth_index = table.GetIndex("FOURTH");
+	MSG(fourth_index);
 
-	//MSG("Getting number of added variables:");
-	//int var_count = table.GetCount();
-	//MSG(var_count);
-	//
-	//MSG("Getting index of 'SECOND':");
-	//int second_index = table.GetIndex("SECOND");
-	//MSG(second_index);
+	MSG("Setting 'FIRST' value to 4");
+	table.SetValue("FIRST", 4);
 
-	//MSG("Getting index of 'FOURTH':");
-	//int fourth_index = table.GetIndex("FOURTH");
-	//MSG(fourth_index);
+	//MSG("Setting 'FOURTH' value to 1")
+	//table.SetValue("FOURTH", 1);
 
-	//MSG("Setting 'FIRST' value to 4");
-	//table.SetValue("FIRST", 4);
+	MSG("Getting 'FIRST' value:");
+	int first_value = table.GetValue("FIRST");
+	MSG(first_value);
 
-	////MSG("Setting 'FOURTH' value to 1")
-	////table.SetValue("FOURTH", 1);
+	MSG("Getting 'SECOND' value:");
+	int second_value = table.GetValue("SECOND");
+	MSG(second_value);*/
 
-	//MSG("Getting 'FIRST' value:");
-	//int first_value = table.GetValue("FIRST");
-	//MSG(first_value);
 
-	//MSG("Getting 'SECOND' value:");
-	//int second_value = table.GetValue("SECOND");
-	//MSG(second_value);
+	// NODE CLASSES TEST CODE
+			//{
+			//	int x;
+			//	cout << x + 3;
+			//}
+	IntegerNode *integern = new IntegerNode(3);
+	IdentifierNode *identifiern1 = new IdentifierNode("x");
+	IdentifierNode *identifiern2 = new IdentifierNode("x");
+
+	PlusNode *plusn = new PlusNode(identifiern1, integern);
+	CoutStatementNode *coutstatementn = new CoutStatementNode(plusn);
+
+	DeclarationStatementNode *declarationn = new DeclarationStatementNode(identifiern2);
+
+	StatementGroupNode *statementgroupn = new StatementGroupNode();
+	statementgroupn->AddStatement(declarationn);
+	statementgroupn->AddStatement(coutstatementn);
+
+	BlockNode *blockn = new BlockNode(statementgroupn);
+
+	ProgramNode *programn = new ProgramNode(blockn);
+
+	StartNode *startn = new StartNode(programn);
+
+	startn->~StartNode();
 
 	return 0;
 }

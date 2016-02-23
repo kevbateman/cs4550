@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-#define ShowMessages 1
+#define ShowMessages 0
 
 #if ShowMessages
 #define MSG(X) std::cout << X << std::endl;
