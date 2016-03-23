@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "Symbol.h"
 #include "Node.h"
+#include "Parser.h"
 
 #include <iostream>
 #include <iomanip>
@@ -75,30 +76,52 @@ int main() {
 
 
 	// NODE CLASSES TEST CODE
-			//{
-			//	int x;
-			//	cout << x + 3;
-			//}
-	IntegerNode *integern = new IntegerNode(3);
-	IdentifierNode *identifiern1 = new IdentifierNode("x");
-	IdentifierNode *identifiern2 = new IdentifierNode("x");
+	//{
+	//	int x;
+	//	x = 5;
+	//	cout << x + 3;
+	//}
+	/*SymbolTableClass symboltable = SymbolTableClass();
 
-	PlusNode *plusn = new PlusNode(identifiern1, integern);
-	CoutStatementNode *coutstatementn = new CoutStatementNode(plusn);
+	IntegerNode *integern1					= new IntegerNode(3);
+	IdentifierNode *identifiern1			= new IdentifierNode("x", &symboltable);
+	PlusNode *plusn							= new PlusNode(identifiern1, integern1);
+	CoutStatementNode *coutstatementn		= new CoutStatementNode(plusn);
 
-	DeclarationStatementNode *declarationn = new DeclarationStatementNode(identifiern2);
+	IntegerNode *integern2					= new IntegerNode(5);
+	IdentifierNode *identifiern2			= new IdentifierNode("x", &symboltable);
+	AssignmentStatementNode *assignmentn	= new AssignmentStatementNode(identifiern2, integern2);
 
-	StatementGroupNode *statementgroupn = new StatementGroupNode();
-	statementgroupn->AddStatement(declarationn);
+	IdentifierNode *identifiern3			= new IdentifierNode("x", &symboltable);
+	DeclarationStatementNode *declarationn	= new DeclarationStatementNode(identifiern3);
+
+	StatementGroupNode *statementgroupn		= new StatementGroupNode();
 	statementgroupn->AddStatement(coutstatementn);
+	statementgroupn->AddStatement(assignmentn);
+	statementgroupn->AddStatement(declarationn);
 
-	BlockNode *blockn = new BlockNode(statementgroupn);
+	BlockNode *blockn						= new BlockNode(statementgroupn);
 
-	ProgramNode *programn = new ProgramNode(blockn);
+	ProgramNode *programn					= new ProgramNode(blockn);
 
-	StartNode *startn = new StartNode(programn);
+	StartNode *startn						= new StartNode(programn);
 
-	startn->~StartNode();
+	delete startn;*/
+
+
+	// EXPRESSION CLASSES TEST CODE
+	//{
+	//	Rate*3+(5-3+x)/10 <= x*(3+x*(2+x))
+	//}
+
+
+	// PARSER TEST CODE
+	SymbolTableClass symboltable = SymbolTableClass();
+	ScannerClass scanner("input.txt");
+	ParserClass parser(&scanner, &symboltable);
+	StartNode * sn = parser.Start();
+	sn->Interpret();
+	delete sn;
 
 	return 0;
 }

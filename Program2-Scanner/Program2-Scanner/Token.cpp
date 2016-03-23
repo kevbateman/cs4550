@@ -19,7 +19,7 @@ void TokenClass::CheckReserved() {
 		this->mType = MAIN_TOKEN;
 	}
 	else if (this->mLexeme == "int") {
-		this->mType = INT_TOKEN;
+		this->mType = INTEGER_TOKEN;
 	}
 	else if (this->mLexeme == "cout") {
 		this->mType = COUT_TOKEN;

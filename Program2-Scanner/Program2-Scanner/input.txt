@@ -1,6 +1,15 @@
 void main()
-{ 
-	int sum; // JUST A LINE COMMENT 
-	sum = 35 /*JUST A BLOCK COMMENT*/+ 400; 
+{
+	int sum;
+	sum = 35 + 400;
 	cout << sum;
+}/*void IfNode::Interpret()
+{
+	if(mExpressionTest.Evaluate())
+	{
+		mStatementNode->Interpret();
+	}
 }
+
+Expression:
+	OR->AND->RELATIONAL->PLUSMINUS->TIMESDIVIDE->FACTOR->IDENTIFIER->INTEGER->(EXPRESSION)*/

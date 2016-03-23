@@ -51,7 +51,7 @@ TokenClass ScannerClass::PeekNextToken() {
 	int line = this->mLineNumber;
 		int pos = (int) this->mFin.tellg();
 			TokenClass nextToken = this->GetNextToken();
-			if (mFin.eof())	{	// if we triggered EOF, then seekg doesn't work,
+			if (!mFin)	{	// if we triggered EOF, then seekg doesn't work,
 				mFin.clear();	// unless we first clear()
 			}
 		mFin.seekg(pos);

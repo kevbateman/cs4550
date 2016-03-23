@@ -36,6 +36,9 @@ public:
 	const std::string & GetTokenTypeName() const {
 		return gTokenTypeNames[this->mType];
 	};
+	static const std::string & GetTokenTypeName(int expected_type) {
+		return gTokenTypeNames[expected_type];
+	};
 	std::string GetLexeme() const {
 		return this->mLexeme;
 	};
