@@ -20,7 +20,7 @@ int main() {
 
 	do {
 	my_token = my_scanner.GetNextToken();
-	std::cout << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
+	std::cout <<"" << std::setw(3) << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
 	} while (my_token.GetTokenType() != ENDFILE_TOKEN);
 
 

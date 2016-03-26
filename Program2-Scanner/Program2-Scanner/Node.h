@@ -6,9 +6,9 @@
 class Node;
 class StartNode;
 class ProgramNode;
+class StatementNode;
 class BlockNode;
 class StatementGroupNode;
-class StatementNode;
 class DeclarationStatementNode;
 class AssignmentStatementNode;
 class CoutStatementNode;
@@ -17,6 +17,8 @@ class IntegerNode;
 class IdentifierNode;
 class BinaryOperatorNode;
 class PlusNode;
+class OrNode;
+class AndNode;
 
 class Node {
 public:
@@ -42,7 +44,9 @@ private:
 	BlockNode * mBlockNode;
 };
 
-class BlockNode : public Node {
+class StatementNode : public Node {};
+
+class BlockNode : public StatementNode {
 public:
 	BlockNode(StatementGroupNode * statementgroupnode);
 	~BlockNode();
@@ -60,7 +64,6 @@ private:
 	std::vector < StatementNode * > mStatementNodes;
 };
 
-class StatementNode : public Node {};
 
 class DeclarationStatementNode : public StatementNode {
 public:
@@ -81,13 +84,33 @@ private:
 	ExpressionNode * mExpressionNode;
 };
 
-class CoutStatementNode: public StatementNode {
+class CoutStatementNode : public StatementNode {
 public:
 	CoutStatementNode(ExpressionNode * expressionnode);
 	~CoutStatementNode();
 	void Interpret();
 private:
 	ExpressionNode * mExpressionNode;
+};
+
+class IfStatementNode : public StatementNode {
+public:
+	IfStatementNode(ExpressionNode * expressionnode, StatementNode * statementnode);
+	~IfStatementNode();
+	void Interpret();
+private:
+	ExpressionNode * mExpressionNode;
+	StatementNode * mStatementNode;
+};
+
+class WhileStatementNode : public StatementNode {
+public:
+	WhileStatementNode(ExpressionNode * expressionnode, StatementNode * statementnode);
+	~WhileStatementNode();
+	void Interpret();
+private:
+	ExpressionNode * mExpressionNode;
+	StatementNode * mStatementNode;
 };
 
 class ExpressionNode {
@@ -128,6 +151,16 @@ protected:
 	ExpressionNode * mRight;
 };
 
+class OrNode : public BinaryOperatorNode {
+public:
+	OrNode(ExpressionNode * left, ExpressionNode * right);
+	int Evaluate();
+};
+class AndNode : public BinaryOperatorNode {
+public:
+	AndNode(ExpressionNode * left, ExpressionNode * right);
+	int Evaluate();
+};
 class PlusNode : public BinaryOperatorNode {
 public:
 	PlusNode(ExpressionNode * left, ExpressionNode * right);

@@ -23,25 +23,32 @@ TokenClass ScannerClass::GetNextToken() {
 	char c;
 	do {
 		c = this->mFin.get();
-		if (c == '\n')
+		if (c == '\n') {
 			this->mLineNumber++;
-		if (state == START_STATE)
+		}
+		if (state == START_STATE) {
 			lexeme.clear();
+		}
 		state = this->mStateMachine.UpdateState(c, type);
 		lexeme += c;
 	} while (state != CANTMOVE_STATE);
 
 	lexeme.pop_back();
-	if (c == '\n')
+	if (c == '\n') {
 		this->mLineNumber--;
-	this->mFin.unget();
+	}
+	else {
+		this->mFin.unget();
+	}
 
 	if (type == BAD_TOKEN) {
-		if (lexeme.empty())
-			lexeme = this->mFin.get();
+		//if (lexeme.empty()) {
+		lexeme = this->mFin.get();
 		std::cout << "\tERROR\t<BAD_TOKEN>\n\t\tSTATE = "
-			<< state << "\n\t\tLEXEME = "
-			<< lexeme << std::endl;
+			<< state << "\n\t\tLEXEME = '"
+			<< lexeme << "'" << std::endl;
+			
+		//}
 		exit(0);
 	}
 	TokenClass nextToken(type, lexeme);
@@ -49,12 +56,12 @@ TokenClass ScannerClass::GetNextToken() {
 }
 TokenClass ScannerClass::PeekNextToken() {
 	int line = this->mLineNumber;
-		int pos = (int) this->mFin.tellg();
-			TokenClass nextToken = this->GetNextToken();
-			if (!mFin)	{	// if we triggered EOF, then seekg doesn't work,
-				mFin.clear();	// unless we first clear()
-			}
-		mFin.seekg(pos);
+	int pos = (int) this->mFin.tellg();
+	TokenClass nextToken = this->GetNextToken();
+	if (!mFin)	{	// if we triggered EOF, then seekg doesn't work,
+		mFin.clear();	// unless we first clear()
+	}
+	mFin.seekg(pos);
 	this->mLineNumber = line;
 
 	return nextToken;

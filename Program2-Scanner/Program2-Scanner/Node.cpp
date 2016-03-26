@@ -87,11 +87,41 @@ CoutStatementNode::CoutStatementNode(ExpressionNode * expressionnode)
 }
 CoutStatementNode::~CoutStatementNode() {
 	MSG("DELETING COUTSTATEMENTNODE");
-	delete this->mExpressionNode; 
+	delete this->mExpressionNode;
 }
 void CoutStatementNode::Interpret() {
 	MSG("    INTERPRETING COUTSTATEMENTNODE");
 	std::cout << this->mExpressionNode->Evaluate() << std::endl;
+}
+
+IfStatementNode::IfStatementNode(ExpressionNode * expressionnode, StatementNode * statementnode)
+	: mExpressionNode(expressionnode), mStatementNode(statementnode) {
+}
+IfStatementNode::~IfStatementNode() {
+	MSG("DELETING IFSTATEMENTNODE");
+	delete this->mExpressionNode;
+	delete this->mStatementNode;
+}
+void IfStatementNode::Interpret() {
+	MSG("    INTERPRETING IFSTATEMENTNODE");
+	if (this->mExpressionNode->Evaluate() != 0) {
+		this->mStatementNode->Interpret();
+	}
+}
+
+WhileStatementNode::WhileStatementNode(ExpressionNode * expressionnode, StatementNode * statementnode)
+	: mExpressionNode(expressionnode), mStatementNode(statementnode) {
+}
+WhileStatementNode::~WhileStatementNode() {
+	MSG("DELETING WHILESTATEMENTNODE");
+	delete this->mExpressionNode;
+	delete this->mStatementNode;
+}
+void WhileStatementNode::Interpret() {
+	MSG("    INTERPRETING WHILESTATEMENTNODE");
+	while (this->mExpressionNode->Evaluate() != 0) {
+		this->mStatementNode->Interpret();
+	}
 }
 
 ExpressionNode::~ExpressionNode() {
@@ -137,7 +167,22 @@ BinaryOperatorNode::~BinaryOperatorNode() {
 	//MSG("DELETING BINARYOPERATORNODE");
 	delete this->mLeft; delete this->mRight; 
 }
-
+OrNode::OrNode(ExpressionNode * left, ExpressionNode * right)
+	: BinaryOperatorNode(left, right) {
+}
+int OrNode::Evaluate() {
+	MSG("\tEVALUATING ORNODE");
+	return ((this->mLeft->Evaluate() != 0) || (this->mRight->Evaluate() != 0)) ? 1 : 0;
+	//return (this->mLeft->Evaluate() || this->mRight->Evaluate()) ? 1 : 0;
+}
+AndNode::AndNode(ExpressionNode * left, ExpressionNode * right)
+	: BinaryOperatorNode(left, right) {
+}
+int AndNode::Evaluate() {
+	MSG("\tEVALUATING ANDNODE");
+	return ((this->mLeft->Evaluate() != 0) && (this->mRight->Evaluate() != 0)) ? 1 : 0;
+	//return (this->mLeft->Evaluate() && this->mRight->Evaluate()) ? 1 : 0;
+}
 PlusNode::PlusNode(ExpressionNode * left, ExpressionNode * right)
 	: BinaryOperatorNode(left, right) {
 }

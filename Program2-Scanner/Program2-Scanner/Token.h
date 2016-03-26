@@ -14,7 +14,7 @@ enum TokenType {
 	SEMICOLON_TOKEN, LPAREN_TOKEN, RPAREN_TOKEN, LCURLY_TOKEN, RCURLY_TOKEN,
 	// Other Token Types:
 	IDENTIFIER_TOKEN, INTEGER_TOKEN,
-	BAD_TOKEN, ENDFILE_TOKEN
+	BAD_TOKEN, ENDFILE_TOKEN, IF_TOKEN, WHILE_TOKEN, OR_TOKEN, AND_TOKEN
 };
 
 const std::string gTokenTypeNames[] = {
@@ -23,7 +23,7 @@ const std::string gTokenTypeNames[] = {
 	"INSERTION", "ASSIGNMENT", "PLUS", "MINUS", "TIMES", "DIVIDE",
 	"SEMICOLON", "LPAREN", "RPAREN", "LCURLY", "RCURLY",
 	"IDENTIFIER", "INTEGER",
-	"BAD", "ENDFILE"
+	"BAD", "ENDFILE", "IF", "WHILE", "OR", "AND"
 };
 
 class TokenClass {

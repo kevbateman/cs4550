@@ -27,7 +27,7 @@ BlockNode * ParserClass::Block()
 {
 	this->Match(LCURLY_TOKEN);
 	StatementGroupNode * sgn = this->StatementGroup();
-	
+	this->Match(RCURLY_TOKEN);
 	BlockNode * bn = new BlockNode(sgn);
 	return bn;
 }
@@ -44,10 +44,8 @@ StatementGroupNode * ParserClass::StatementGroup()
 		}
 		else {
 			sgn->AddStatement(sn);
-			this->Match(SEMICOLON_TOKEN);
 		}
 	}
-	this->Match(RCURLY_TOKEN);
 	return sgn;
 }
 StatementNode * ParserClass::Statement() {
@@ -58,13 +56,27 @@ StatementNode * ParserClass::Statement() {
 	case INTEGER_TOKEN:
 		this->Match(tt);
 		sn = this->DeclarationStatement();
+		this->Match(SEMICOLON_TOKEN);
 		break;
 	case IDENTIFIER_TOKEN:
 		sn = this->AssignmentStatement();
+		this->Match(SEMICOLON_TOKEN);
 		break;
 	case COUT_TOKEN:
 		this->Match(tt);
 		sn = this->CoutStatement();
+		this->Match(SEMICOLON_TOKEN);
+		break;
+	case IF_TOKEN:
+		this->Match(tt);
+		sn = this->IfStatement();
+		break;
+	case WHILE_TOKEN:
+		this->Match(tt);
+		sn = this->WhileStatement();
+		break;
+	case LCURLY_TOKEN:
+		sn = this->Block();
 		break;
 	default:
 		return NULL;
@@ -91,6 +103,24 @@ CoutStatementNode * ParserClass::CoutStatement()
 	ExpressionNode * en = this->Expression();
 	CoutStatementNode * csn = new CoutStatementNode(en);
 	return csn;
+}
+IfStatementNode * ParserClass::IfStatement()
+{
+	this->Match(LPAREN_TOKEN);
+	ExpressionNode * en = this->Expression();
+	this->Match(RPAREN_TOKEN);
+	StatementNode * sn = this->Statement();
+	IfStatementNode * isn = new IfStatementNode(en, sn);
+	return isn;
+}
+WhileStatementNode * ParserClass::WhileStatement()
+{
+	this->Match(LPAREN_TOKEN);
+	ExpressionNode * en = this->Expression();
+	this->Match(RPAREN_TOKEN); 
+	StatementNode * sn = this->Statement();
+	WhileStatementNode * wsn = new WhileStatementNode(en, sn);
+	return wsn;
 }
 ExpressionNode * ParserClass::Expression()
 {
@@ -127,27 +157,71 @@ ExpressionNode * ParserClass::Expression()
 }
 ExpressionNode * ParserClass::Side()
 {
-	ExpressionNode * current = this->PlusMinus();
+	ExpressionNode * current = this->Or();
 	bool loop = true;
 	while (loop)
 	{
 		TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
 		switch (tt)
 		{
-		case PLUS_TOKEN:
+		case OR_TOKEN:
 			this->Match(tt);
-			current = new PlusNode(current, this->PlusMinus());
+			current = new OrNode(current, this->Or());
 			break;
-		case MINUS_TOKEN:
-			this->Match(tt);
-			current = new MinusNode(current, this->PlusMinus());
-			break;
+		//case PLUS_TOKEN:
+		//	this->Match(tt);
+		//	current = new PlusNode(current, this->PlusMinus());
+		//	break;
+		//case MINUS_TOKEN:
+		//	this->Match(tt);
+		//	current = new MinusNode(current, this->PlusMinus());
+		//	break;
 		default:
 			loop = false;
 			break;
 		}
 	}
 	return current;
+}
+ExpressionNode * ParserClass::Or()
+{
+	ExpressionNode * lhs = this->And();
+	bool loop = true;
+	while (loop)
+	{
+		TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+		switch (tt)
+		{
+		case OR_TOKEN:
+			this->Match(tt);
+			lhs = new OrNode(lhs, this->And());
+			break;
+		default:
+			loop = false;
+			break;
+		}
+	}
+	return lhs;
+}
+ExpressionNode * ParserClass::And()
+{
+	ExpressionNode * lhs = this->PlusMinus();
+	bool loop = true;
+	while (loop)
+	{
+		TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+		switch (tt)
+		{
+		case AND_TOKEN:
+			this->Match(tt);
+			lhs = new AndNode(lhs, this->PlusMinus());
+			break;
+		default:
+			loop = false;
+			break;
+		}
+	}
+	return lhs;
 }
 ExpressionNode * ParserClass::PlusMinus()
 {
@@ -200,34 +274,12 @@ ExpressionNode * ParserClass::TimesDivide()
 ExpressionNode * ParserClass::Factor()
 {
 	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
-	//if (tt == IDENTIFIER_TOKEN)
-	//{
-	//	return this->Identifier();
-	//}
-	//else if (tt == INTEGER_TOKEN)
-	//{
-	//	return this->Integer();
-	//}
-	//else if (tt == LPAREN_TOKEN)
-	//{
-	//	this->Match(LPAREN_TOKEN);
-	//	ExpressionNode * en = this->Expression();
-	//	this->Match(RPAREN_TOKEN);
-	//	return en;
-	//}
-	//else
-	//{
-	//	std::cerr << "ERROR: Token type from FACTOR function is wrong: Must be IDENTIFIER_TOKEN, INTEGER_TOKEN, or LPAREN_TOKEN" << std::endl;
-	//	std::cerr << "CURRENTLY IS:" << TokenClass::GetTokenTypeName(tt) << std::endl;
-	//}
 	switch (tt)
 	{
 	case IDENTIFIER_TOKEN:
 		return this->Identifier();
-		break;
 	case INTEGER_TOKEN:
 		return this->Integer();
-		break;
 	default:
 		if (tt == LPAREN_TOKEN)
 		{
@@ -239,7 +291,6 @@ ExpressionNode * ParserClass::Factor()
 		std::cerr << "ERROR: Token type from FACTOR function is wrong: Must be IDENTIFIER_TOKEN, INTEGER_TOKEN, or LPAREN_TOKEN" << std::endl;
 		std::cerr << "CURRENTLY IS:" << TokenClass::GetTokenTypeName(tt) << std::endl;
 		return NULL;
-		break;
 	}
 }
 IdentifierNode * ParserClass::Identifier()

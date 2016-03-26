@@ -16,8 +16,12 @@ public:
 	DeclarationStatementNode * DeclarationStatement();
 	AssignmentStatementNode * AssignmentStatement();
 	CoutStatementNode * CoutStatement();
+	IfStatementNode * IfStatement();
+	WhileStatementNode * WhileStatement();
 	ExpressionNode * Expression();
 	ExpressionNode * Side();
+	ExpressionNode * Or();
+	ExpressionNode * And();
 	ExpressionNode * PlusMinus();
 	ExpressionNode * TimesDivide();
 	ExpressionNode * Factor();
