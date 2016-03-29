@@ -124,34 +124,11 @@ WhileStatementNode * ParserClass::WhileStatement()
 }
 ExpressionNode * ParserClass::Expression()
 {
-	ExpressionNode * current = this->Side();
+	ExpressionNode * current = this->Or();
 	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
-	if (tt == LESS_TOKEN	|| tt == LESSEQUAL_TOKEN	||
-		tt == GREATER_TOKEN || tt == GREATEREQUAL_TOKEN ||
-		tt == EQUAL_TOKEN	|| tt == NOTEQUAL_TOKEN)
-	{
+	if (tt == OR_TOKEN) {
 		this->Match(tt);
-		switch (tt)
-		{
-		case LESS_TOKEN:
-			current = new LessNode(current, this->Side());
-			break;
-		case LESSEQUAL_TOKEN:
-			current = new LessEqualNode(current, this->Side());
-			break;
-		case GREATER_TOKEN:
-			current = new GreaterNode(current, this->Side());
-			break;
-		case GREATEREQUAL_TOKEN:
-			current = new GreaterEqualNode(current, this->Side());
-			break;
-		case EQUAL_TOKEN:
-			current = new EqualNode(current, this->Side());
-			break;
-		case NOTEQUAL_TOKEN:
-			current = new NotEqualNode(current, this->Side());
-			break;
-		}
+		current = new OrNode(current, this->Or());
 	}
 	return current;
 }
@@ -168,14 +145,6 @@ ExpressionNode * ParserClass::Side()
 			this->Match(tt);
 			current = new OrNode(current, this->Or());
 			break;
-		//case PLUS_TOKEN:
-		//	this->Match(tt);
-		//	current = new PlusNode(current, this->PlusMinus());
-		//	break;
-		//case MINUS_TOKEN:
-		//	this->Match(tt);
-		//	current = new MinusNode(current, this->PlusMinus());
-		//	break;
 		default:
 			loop = false;
 			break;
@@ -205,7 +174,7 @@ ExpressionNode * ParserClass::Or()
 }
 ExpressionNode * ParserClass::And()
 {
-	ExpressionNode * lhs = this->PlusMinus();
+	ExpressionNode * lhs = this->Comparison();
 	bool loop = true;
 	while (loop)
 	{
@@ -214,7 +183,46 @@ ExpressionNode * ParserClass::And()
 		{
 		case AND_TOKEN:
 			this->Match(tt);
-			lhs = new AndNode(lhs, this->PlusMinus());
+			lhs = new AndNode(lhs, this->Comparison());
+			break;
+		default:
+			loop = false;
+			break;
+		}
+	}
+	return lhs;
+}
+ExpressionNode * ParserClass::Comparison()
+{
+	ExpressionNode * lhs = this->PlusMinus();
+	bool loop = true;
+	while (loop) {
+		TokenType tt = this->mScanner->PeekNextToken().GetTokenType();	
+		switch (tt)
+		{
+		case LESS_TOKEN:
+			this->Match(tt);
+			lhs = new LessNode(lhs, this->PlusMinus());
+			break;
+		case LESSEQUAL_TOKEN:
+			this->Match(tt);
+			lhs = new LessEqualNode(lhs, this->PlusMinus());
+			break;
+		case GREATER_TOKEN:
+			this->Match(tt);
+			lhs = new GreaterNode(lhs, this->PlusMinus());
+			break;
+		case GREATEREQUAL_TOKEN:
+			this->Match(tt);
+			lhs = new GreaterEqualNode(lhs, this->PlusMinus());
+			break;
+		case EQUAL_TOKEN:
+			this->Match(tt);
+			lhs = new EqualNode(lhs, this->PlusMinus());
+			break;
+		case NOTEQUAL_TOKEN:
+			this->Match(tt);
+			lhs = new NotEqualNode(lhs, this->PlusMinus());
 			break;
 		default:
 			loop = false;

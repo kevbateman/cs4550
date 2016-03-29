@@ -16,7 +16,6 @@ ScannerClass::ScannerClass(std::string string_input)
 
 TokenClass ScannerClass::GetNextToken() {
 	this->mStateMachine.ResetState();
-
 	TokenType type;
 	std::string lexeme;
 	MachineState state = START_STATE;
@@ -37,9 +36,8 @@ TokenClass ScannerClass::GetNextToken() {
 	if (c == '\n') {
 		this->mLineNumber--;
 	}
-	else {
-		this->mFin.unget();
-	}
+	
+	this->mFin.unget();
 
 	if (type == BAD_TOKEN) {
 		//if (lexeme.empty()) {

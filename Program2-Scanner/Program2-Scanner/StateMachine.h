@@ -28,6 +28,7 @@ public:
 		char currentCharacter, 
 		TokenType& correspondingTokenType);
 	void ResetState();
+	MachineState GetCurrentState();
 private:
 	MachineState mCurrentState;
 

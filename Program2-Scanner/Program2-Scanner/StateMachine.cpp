@@ -17,6 +17,7 @@ StateMachineClass::StateMachineClass()
 	this->mLegalMoves[START_STATE][LETTER_CHAR]			= IDENTIFIER_STATE;
 	this->mLegalMoves[START_STATE][DIGIT_CHAR]			= INTEGER_STATE;
 	this->mLegalMoves[START_STATE][WHITESPACE_CHAR]		= START_STATE;
+	this->mLegalMoves[START_STATE][NEWLINE_CHAR]		= START_STATE;
 	this->mLegalMoves[START_STATE][ENDFILE_CHAR]		= ENDFILE_STATE;
 	this->mLegalMoves[START_STATE][UNDERBAR_CHAR]		= IDENTIFIER_STATE;
 	this->mLegalMoves[START_STATE][LESS_CHAR]			= LESS_STATE;
@@ -117,7 +118,7 @@ MachineState StateMachineClass::UpdateState(
 	if (isdigit(currentCharacter)) {
 		charType = DIGIT_CHAR;
 	}
-	if (isspace(currentCharacter)) {
+	if (isspace(currentCharacter) && currentCharacter != '\n') {
 		charType = WHITESPACE_CHAR;
 	}
 	if (currentCharacter == EOF) {
@@ -187,4 +188,8 @@ MachineState StateMachineClass::UpdateState(
 
 void StateMachineClass::ResetState() {
 	this->mCurrentState = START_STATE;
+}
+
+MachineState StateMachineClass::GetCurrentState() {
+	return this->mCurrentState;
 }

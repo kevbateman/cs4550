@@ -22,6 +22,7 @@ public:
 	ExpressionNode * Side();
 	ExpressionNode * Or();
 	ExpressionNode * And();
+	ExpressionNode * Comparison();
 	ExpressionNode * PlusMinus();
 	ExpressionNode * TimesDivide();
 	ExpressionNode * Factor();

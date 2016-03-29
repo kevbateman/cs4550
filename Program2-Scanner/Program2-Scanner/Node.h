@@ -16,6 +16,8 @@ class ExpressionNode;
 class IntegerNode;
 class IdentifierNode;
 class BinaryOperatorNode;
+class IfStatementNode;
+class WhileStatementNode;
 class PlusNode;
 class OrNode;
 class AndNode;
