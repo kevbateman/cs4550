@@ -14,6 +14,7 @@ public:
 	StatementGroupNode * StatementGroup();
 	StatementNode * Statement();
 	DeclarationStatementNode * DeclarationStatement();
+	StatementNode * IdentifierStatement();
 	AssignmentStatementNode * AssignmentStatement();
 	CoutStatementNode * CoutStatement();
 	IfStatementNode * IfStatement();
@@ -25,6 +26,7 @@ public:
 	ExpressionNode * Comparison();
 	ExpressionNode * PlusMinus();
 	ExpressionNode * TimesDivide();
+	ExpressionNode * Not();
 	ExpressionNode * Factor();
 	//ExpressionNode * FactorTail();
 	IdentifierNode * Identifier();

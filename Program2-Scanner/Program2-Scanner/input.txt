@@ -2,6 +2,14 @@ void main()
 {
 	int sum;
 	sum = 400;
+	cout << sum << endl;
+	sum += 50;
+	cout << sum << endl;
+	sum -= 75;
+	cout << sum << endl << endl << sum + 5 << endl;
+	
+	/*int sum;
+	sum = 400;
 	cout << sum;
 	if (1 && (sum < 436)) {
 		sum = sum + 25;
@@ -15,12 +23,37 @@ void main()
 		sum = sum - 100;
 		cout << sum;
 	}
-	cout << sum; 
+	cout << sum;*/
+	/*scoping
+	void main()
+	{
+		int x;
+		x = 10;
+		int y;
+		y = 20;
+		if( y > x)
+		{
+			int z; // should produce error if printed outside of curly braces
+			int x;
+			x = 11;
+			y = 21;
+		}
+		cout << x << y;
+		cout << z; // should produce error (outside of curly brace scope)
+	}*/
+	/*int x;
+	int y;
+	int z;
+	int w;
+
+	x = 2;
+	y = 0;
+	z = 0;
+	w = x || !y && !!z;
+	cout << w;
+	cout << !x;
+	cout << !y;*/
 }
-
-
-
-
 
 /*void IfNode::Interpret()
 {

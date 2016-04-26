@@ -33,7 +33,7 @@ StateMachineClass::StateMachineClass()
 	this->mLegalMoves[START_STATE][PLUS_CHAR]			= PLUS_STATE;
 	this->mLegalMoves[START_STATE][TIMES_CHAR]			= TIMES_STATE;
 	this->mLegalMoves[START_STATE][DIVIDE_CHAR]			= DIVIDE_STATE;
-	this->mLegalMoves[START_STATE][NOT_CHAR]			= NOTEQUAL_STATE;
+	this->mLegalMoves[START_STATE][NOT_CHAR]			= NOT_STATE;
 	this->mLegalMoves[START_STATE][VBAR_CHAR]			= VBAR_STATE;
 	this->mLegalMoves[START_STATE][AMPERSAND_CHAR]		= AMPERSAND_STATE;
 
@@ -79,32 +79,42 @@ StateMachineClass::StateMachineClass()
 	this->mLegalMoves[VBAR_STATE][VBAR_CHAR]			= OR_STATE;
 	this->mLegalMoves[AMPERSAND_STATE][AMPERSAND_CHAR]	= AND_STATE;
 
+	// != states
+	this->mLegalMoves[NOT_STATE][EQUAL_CHAR]			= NOTEQUAL_STATE;
+
+	// + and - states
+	this->mLegalMoves[PLUS_STATE][EQUAL_CHAR]			= PLUSASSIGNMENT_STATE;
+	this->mLegalMoves[MINUS_STATE][EQUAL_CHAR]			= MINUSASSIGNMENT_STATE;
+
 	// First, initialize all states to correspond to the BAD token type.
 	// Then, reset the end states to correspond to the correct token types.
 	for (i = 0; i<LAST_STATE; i++) {
-		this->mCorrespondingTokenTypes[i]				= BAD_TOKEN;
+		this->mCorrespondingTokenTypes[i]					= BAD_TOKEN;
 	}
-	this->mCorrespondingTokenTypes[IDENTIFIER_STATE]	= IDENTIFIER_TOKEN;
-	this->mCorrespondingTokenTypes[INTEGER_STATE]		= INTEGER_TOKEN;
-	this->mCorrespondingTokenTypes[ENDFILE_STATE]		= ENDFILE_TOKEN;
-	this->mCorrespondingTokenTypes[LESS_STATE]			= LESS_TOKEN;
-	this->mCorrespondingTokenTypes[GREATER_STATE]		= GREATER_TOKEN;
-	this->mCorrespondingTokenTypes[ASSIGNMENT_STATE]	= ASSIGNMENT_TOKEN;
-	this->mCorrespondingTokenTypes[SEMICOLON_STATE]		= SEMICOLON_TOKEN;
-	this->mCorrespondingTokenTypes[LPAREN_STATE]		= LPAREN_TOKEN;
-	this->mCorrespondingTokenTypes[RPAREN_STATE]		= RPAREN_TOKEN;
-	this->mCorrespondingTokenTypes[LCURLY_STATE]		= LCURLY_TOKEN;
-	this->mCorrespondingTokenTypes[RCURLY_STATE]		= RCURLY_TOKEN;
-	this->mCorrespondingTokenTypes[MINUS_STATE]			= MINUS_TOKEN;
-	this->mCorrespondingTokenTypes[PLUS_STATE]			= PLUS_TOKEN;
-	this->mCorrespondingTokenTypes[TIMES_STATE]			= TIMES_TOKEN;
-	this->mCorrespondingTokenTypes[DIVIDE_STATE]		= DIVIDE_TOKEN;
-	this->mCorrespondingTokenTypes[LESSEQUAL_STATE]		= LESSEQUAL_TOKEN;
-	this->mCorrespondingTokenTypes[GREATEREQUAL_STATE]	= GREATEREQUAL_TOKEN;
-	this->mCorrespondingTokenTypes[NOTEQUAL_STATE]		= NOTEQUAL_TOKEN;
-	this->mCorrespondingTokenTypes[INSERTION_STATE]		= INSERTION_TOKEN;
-	this->mCorrespondingTokenTypes[OR_STATE]			= OR_TOKEN;
-	this->mCorrespondingTokenTypes[AND_STATE]			= AND_TOKEN;
+	this->mCorrespondingTokenTypes[IDENTIFIER_STATE]		= IDENTIFIER_TOKEN;
+	this->mCorrespondingTokenTypes[INTEGER_STATE]			= INTEGER_TOKEN;
+	this->mCorrespondingTokenTypes[ENDFILE_STATE]			= ENDFILE_TOKEN;
+	this->mCorrespondingTokenTypes[LESS_STATE]				= LESS_TOKEN;
+	this->mCorrespondingTokenTypes[GREATER_STATE]			= GREATER_TOKEN;
+	this->mCorrespondingTokenTypes[ASSIGNMENT_STATE]		= ASSIGNMENT_TOKEN;
+	this->mCorrespondingTokenTypes[SEMICOLON_STATE]			= SEMICOLON_TOKEN;
+	this->mCorrespondingTokenTypes[LPAREN_STATE]			= LPAREN_TOKEN;
+	this->mCorrespondingTokenTypes[RPAREN_STATE]			= RPAREN_TOKEN;
+	this->mCorrespondingTokenTypes[LCURLY_STATE]			= LCURLY_TOKEN;
+	this->mCorrespondingTokenTypes[RCURLY_STATE]			= RCURLY_TOKEN;
+	this->mCorrespondingTokenTypes[MINUS_STATE]				= MINUS_TOKEN;
+	this->mCorrespondingTokenTypes[PLUS_STATE]				= PLUS_TOKEN;
+	this->mCorrespondingTokenTypes[TIMES_STATE]				= TIMES_TOKEN;
+	this->mCorrespondingTokenTypes[DIVIDE_STATE]			= DIVIDE_TOKEN;
+	this->mCorrespondingTokenTypes[LESSEQUAL_STATE]			= LESSEQUAL_TOKEN;
+	this->mCorrespondingTokenTypes[GREATEREQUAL_STATE]		= GREATEREQUAL_TOKEN;
+	this->mCorrespondingTokenTypes[NOTEQUAL_STATE]			= NOTEQUAL_TOKEN;
+	this->mCorrespondingTokenTypes[INSERTION_STATE]			= INSERTION_TOKEN;
+	this->mCorrespondingTokenTypes[OR_STATE]				= OR_TOKEN;
+	this->mCorrespondingTokenTypes[AND_STATE]				= AND_TOKEN;
+	this->mCorrespondingTokenTypes[NOT_STATE]				= NOT_TOKEN;
+	this->mCorrespondingTokenTypes[PLUSASSIGNMENT_STATE]	= PLUSASSIGNMENT_TOKEN;
+	this->mCorrespondingTokenTypes[MINUSASSIGNMENT_STATE]	= MINUSASSIGNMENT_TOKEN;
 }
 
 MachineState StateMachineClass::UpdateState(

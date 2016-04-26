@@ -22,8 +22,6 @@ int main() {
 	std::cout << std::setw(3) << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
 	} while (my_token.GetTokenType() != ENDFILE_TOKEN);
 
-
-
 	// SYMBOLTABLECLASS TESTCODE
 	/*SymbolTableClass table;
 	MSG("Adding 'FIRST'")
@@ -119,7 +117,12 @@ int main() {
 	ScannerClass scanner("input.txt");
 	ParserClass parser(&scanner, &symboltable);
 	StartNode * sn = parser.Start();
-	sn->Interpret();
+	//sn->Interpret();
+	InstructionsClass ic = InstructionsClass();
+	sn->Code(ic);
+	ic.Finish();
+	ic.Execute();
+
 	delete sn;
 
 	return 0;

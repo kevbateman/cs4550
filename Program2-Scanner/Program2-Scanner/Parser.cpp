@@ -92,16 +92,69 @@ DeclarationStatementNode * ParserClass::DeclarationStatement()
 AssignmentStatementNode * ParserClass::AssignmentStatement()
 {
 	IdentifierNode * in = this->Identifier();
-	this->Match(ASSIGNMENT_TOKEN);
-	ExpressionNode * en = this->Expression();
-	AssignmentStatementNode * asn = new AssignmentStatementNode(in,en);
+	
+	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+	AssignmentStatementNode * asn;
+	ExpressionNode * en;
+	switch (tt)
+	{
+	case ASSIGNMENT_TOKEN:
+		this->Match(ASSIGNMENT_TOKEN);
+		en = this->Expression();
+		asn = new AssignmentStatementNode(in, en);
+		break;
+	case PLUSASSIGNMENT_TOKEN:
+		this->Match(PLUSASSIGNMENT_TOKEN);
+		en = this->Expression();
+		asn = new PlusAssignmentStatementNode(in, en);
+		break;
+	case MINUSASSIGNMENT_TOKEN:
+		this->Match(MINUSASSIGNMENT_TOKEN);
+		en = this->Expression();
+		asn = new MinusAssignmentStatementNode(in, en);
+		break;
+	default:
+		return NULL;
+	}
 	return asn;
 }
 CoutStatementNode * ParserClass::CoutStatement()
 {
+	CoutStatementNode * csn = new CoutStatementNode();
 	this->Match(INSERTION_TOKEN);
-	ExpressionNode * en = this->Expression();
-	CoutStatementNode * csn = new CoutStatementNode(en);
+	
+	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+	switch (tt)
+	{
+	case ENDL_TOKEN:
+		this->Match(ENDL_TOKEN);
+		csn->AddExpression(NULL);
+		break;
+	default:
+		csn->AddExpression(this->Expression());
+		break;
+	}
+
+	while (true)
+	{
+		tt = this->mScanner->PeekNextToken().GetTokenType();
+
+		if (tt != INSERTION_TOKEN) break;
+
+		this->Match(INSERTION_TOKEN);
+
+		tt = this->mScanner->PeekNextToken().GetTokenType();
+		switch (tt)
+		{
+		case ENDL_TOKEN:
+			this->Match(ENDL_TOKEN);
+			csn->AddExpression(NULL);
+			break;
+		default:
+			csn->AddExpression(this->Expression());
+			break;
+		}
+	}
 	return csn;
 }
 IfStatementNode * ParserClass::IfStatement()
@@ -257,7 +310,7 @@ ExpressionNode * ParserClass::PlusMinus()
 }
 ExpressionNode * ParserClass::TimesDivide()
 {
-	ExpressionNode * lhs = this->Factor();
+	ExpressionNode * lhs = this->Not();
 	bool loop = true;
 	while (loop)
 	{
@@ -266,11 +319,11 @@ ExpressionNode * ParserClass::TimesDivide()
 		{
 		case TIMES_TOKEN:
 			this->Match(tt);
-			lhs = new TimesNode(lhs, this->Factor());
+			lhs = new TimesNode(lhs, this->Not());
 			break;
 		case DIVIDE_TOKEN:
 			this->Match(tt);
-			lhs = new DivideNode(lhs, this->Factor());
+			lhs = new DivideNode(lhs, this->Not());
 			break;
 		default:
 			loop = false;
@@ -278,6 +331,18 @@ ExpressionNode * ParserClass::TimesDivide()
 		}
 	}
 	return lhs;
+}
+ExpressionNode * ParserClass::Not()
+{
+	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+	switch (tt)
+	{
+	case NOT_TOKEN:
+		this->Match(tt);
+		return new NotNode(this->Not());
+	default:
+		return this->Factor();
+	}
 }
 ExpressionNode * ParserClass::Factor()
 {
