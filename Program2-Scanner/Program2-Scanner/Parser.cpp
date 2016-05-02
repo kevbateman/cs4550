@@ -28,7 +28,7 @@ BlockNode * ParserClass::Block()
 	this->Match(LCURLY_TOKEN);
 	StatementGroupNode * sgn = this->StatementGroup();
 	this->Match(RCURLY_TOKEN);
-	BlockNode * bn = new BlockNode(sgn);
+	BlockNode * bn = new BlockNode(sgn, mSymbolTable);
 	return bn;
 }
 StatementGroupNode * ParserClass::StatementGroup()

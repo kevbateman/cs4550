@@ -8,6 +8,20 @@ void main()
 	sum -= 75;
 	cout << sum << endl << endl << sum + 5 << endl;
 	
+	int y;
+	y = 10;
+	if (sum < 400)
+	{
+		int sum;
+		sum = 50;
+		cout << sum << endl;
+		int x;
+		x = 5;
+		cout << x << endl;
+		y += 3000;
+	}
+	cout << sum << endl;
+	cout << y << endl;
 	/*int sum;
 	sum = 400;
 	cout << sum;

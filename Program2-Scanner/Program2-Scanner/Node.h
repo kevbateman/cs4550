@@ -57,12 +57,13 @@ class StatementNode : public Node {};
 
 class BlockNode : public StatementNode {
 public:
-	BlockNode(StatementGroupNode * statementgroupnode);
+	BlockNode(StatementGroupNode * statementgroupnode, SymbolTableClass * symboltable);
 	~BlockNode();
 	void Interpret();
 	void Code(InstructionsClass &machinecode);
 private:
 	StatementGroupNode * mStatementGroupNode;
+	SymbolTableClass * mSymbolTable;
 };
 
 class StatementGroupNode : public Node {

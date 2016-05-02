@@ -35,8 +35,8 @@ void ProgramNode::Code(InstructionsClass &machinecode) {
 	MSG("    CODING PROGRAMNODE");
 	this->mBlockNode->Code(machinecode);
 }
-BlockNode::BlockNode(StatementGroupNode * statementgroupnode)
-	: mStatementGroupNode(statementgroupnode) {
+BlockNode::BlockNode(StatementGroupNode * statementgroupnode, SymbolTableClass * symboltable)
+	: mStatementGroupNode(statementgroupnode), mSymbolTable(symboltable) {
 }
 BlockNode::~BlockNode() {
 	MSG("DELETING BLOCKNODE");
@@ -44,11 +44,15 @@ BlockNode::~BlockNode() {
 }
 void BlockNode::Interpret() {
 	MSG("INTERPRETING BLOCKNODE");
+	mSymbolTable->PushScope();
 	mStatementGroupNode->Interpret();
+	mSymbolTable->PopScope();
 }
 void BlockNode::Code(InstructionsClass &machinecode) {
 	MSG("    CODING BLOCKNODE");
+	mSymbolTable->PushScope();
 	this->mStatementGroupNode->Code(machinecode);
+	mSymbolTable->PopScope();
 }
 StatementGroupNode::~StatementGroupNode() {
 	MSG("DELETING STATEMENTGROUPNODE");
