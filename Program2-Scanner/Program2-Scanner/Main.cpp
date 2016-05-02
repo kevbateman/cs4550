@@ -117,11 +117,11 @@ int main() {
 	ScannerClass scanner("input.txt");
 	ParserClass parser(&scanner, &symboltable);
 	StartNode * sn = parser.Start();
-	//sn->Interpret();
-	InstructionsClass ic = InstructionsClass();
-	sn->Code(ic);
-	ic.Finish();
-	ic.Execute();
+	sn->Interpret();
+	//InstructionsClass ic = InstructionsClass();
+	//sn->Code(ic);
+	//ic.Finish();
+	//ic.Execute();
 
 	delete sn;
 
