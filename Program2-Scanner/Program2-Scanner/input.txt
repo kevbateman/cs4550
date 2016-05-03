@@ -17,7 +17,7 @@ void main()
 	cout << sum << endl;
 	sum -= 75;
 	cout << sum << endl << endl << sum + 5 << endl;
-	
+
 	int y;
 	y = 10;
 	if (sum < 400)
@@ -93,5 +93,5 @@ Expression:
 	if (1) {
 		sum = sum + 35;
 	}
-	
+
 	*/

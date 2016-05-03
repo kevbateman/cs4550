@@ -63,14 +63,19 @@ void InstructionsClass::Encode(unsigned char c)
 
 void InstructionsClass::Encode(int x)
 {
-	*((int*)(&(mCode[mCurrent]))) = x;
-	mCurrent += 4;
+	if (mCurrent < MAX_INSTRUCTIONS-4) {
+		*((int*)(&(mCode[mCurrent]))) = x;
+		mCurrent += 4;
+	}
 }
 
 void InstructionsClass::Encode(long long x)
 {
-	*((long long*)(&(mCode[mCurrent]))) = x;
-	mCurrent += 4;
+	if (mCurrent < MAX_INSTRUCTIONS-8)
+	{
+		*((long long*)(&(mCode[mCurrent]))) = x;
+			mCurrent += 8;
+	}
 }
 
 void InstructionsClass::Encode(void * p)
@@ -170,7 +175,7 @@ void InstructionsClass::PopAndWrite()
 	this->Call((void*)HelperPrintInteger);
 }
 
-// returns the address corresponding to variable <index> 
+// returns the address corresponding to variable <index>
 // in the mData array.
 int * InstructionsClass::GetMem(int index)
 {

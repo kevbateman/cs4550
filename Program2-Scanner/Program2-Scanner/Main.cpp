@@ -13,14 +13,14 @@ int main() {
 	MSG("STARTING MAIN FUNCTION");
 
 	// SCANNERCLASS TESTCODE
-	ScannerClass my_scanner("input.txt");
-
-	TokenClass my_token;
-
-	do {
-	my_token = my_scanner.GetNextToken();
-	std::cout << std::setw(3) << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
-	} while (my_token.GetTokenType() != ENDFILE_TOKEN);
+	// ScannerClass my_scanner("input.txt");
+	//
+	// TokenClass my_token;
+	//
+	// do {
+	// my_token = my_scanner.GetNextToken();
+	// std::cout << std::setw(3) << my_scanner.GetLineNumber() << std::setw(3) << ' ' << my_token << std::endl;
+	// } while (my_token.GetTokenType() != ENDFILE_TOKEN);
 
 	// SYMBOLTABLECLASS TESTCODE
 	/*SymbolTableClass table;
@@ -117,10 +117,11 @@ int main() {
 	ScannerClass scanner("input.txt");
 	ParserClass parser(&scanner, &symboltable);
 	StartNode * sn = parser.Start();
-	//sn->Interpret();
+	// sn->Interpret();
 	InstructionsClass ic = InstructionsClass();
 	sn->Code(ic);
 	ic.Finish();
+	//ic.PrintAllMachineCodes();
 	ic.Execute();
 
 	delete sn;
