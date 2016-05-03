@@ -13,7 +13,9 @@ bool SymbolTableClass::Exists(std::string s) {
 
 void SymbolTableClass::AddEntry(std::string s) {
 	if (this->GetScopeIndex(s) == -1) {
-		this->variables.push_back(Variable{ s });
+		Variable v;
+		v.mLabel = s;
+		this->variables.push_back(v);
 	}
 	else {
 		try {
