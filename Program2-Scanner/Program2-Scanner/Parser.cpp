@@ -1,6 +1,7 @@
 #include "Parser.h"
 #include "Token.h"
 #include "Node.h"
+#include <cstdlib>
 
 ParserClass::ParserClass(ScannerClass *scanner, SymbolTableClass *symboltable)
 	:mScanner(scanner), mSymbolTable(symboltable)
@@ -86,8 +87,20 @@ StatementNode * ParserClass::Statement() {
 DeclarationStatementNode * ParserClass::DeclarationStatement()
 {
 	IdentifierNode * in = this->Identifier();
-	DeclarationStatementNode * dsn = new DeclarationStatementNode(in);
-	return dsn;
+	
+	TokenType tt = this->mScanner->PeekNextToken().GetTokenType();
+	ExpressionNode * en;
+	switch (tt)
+	{
+	case ASSIGNMENT_TOKEN:
+		this->Match(ASSIGNMENT_TOKEN);
+		en = this->Expression();
+		return new DeclarationAssignmentStatementNode(in, en);
+		break;
+	default:
+		return new DeclarationStatementNode(in);
+		break;
+	}
 }
 AssignmentStatementNode * ParserClass::AssignmentStatement()
 {
@@ -112,6 +125,11 @@ AssignmentStatementNode * ParserClass::AssignmentStatement()
 		this->Match(MINUSASSIGNMENT_TOKEN);
 		en = this->Expression();
 		asn = new MinusAssignmentStatementNode(in, en);
+		break;
+	case TIMESASSIGNMENT_TOKEN:
+		this->Match(TIMESASSIGNMENT_TOKEN);
+		en = this->Expression();
+		asn = new TimesAssignmentStatementNode(in, en);
 		break;
 	default:
 		return NULL;

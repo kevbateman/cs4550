@@ -33,6 +33,15 @@ void TokenClass::CheckReserved() {
 	else if (this->mLexeme == "endl") {
 		this->mType = ENDL_TOKEN;
 	}
+	else if (this->mLexeme == "endl") {
+		this->mType = ENDL_TOKEN;
+	}
+	else if (this->mLexeme == "and") {
+		this->mType = AND_TOKEN;
+	}
+	else if (this->mLexeme == "or") {
+		this->mType = OR_TOKEN;
+	}
 }
 
 std::ostream& operator<<(std::ostream& out, const TokenClass& tc)

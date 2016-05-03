@@ -1,5 +1,6 @@
 #include "Node.h"
 #include "Debug.h"
+#include <cstdlib>
 
 Node::~Node() {
 }
@@ -92,6 +93,26 @@ void DeclarationStatementNode::Code(InstructionsClass &machinecode) {
 	this->mIdentifierNode->DeclareVariable();
 }
 
+DeclarationAssignmentStatementNode::DeclarationAssignmentStatementNode(IdentifierNode * idenifiernode, ExpressionNode * expressionnode)
+	: DeclarationStatementNode(idenifiernode), mExpressionNode(expressionnode) {
+}
+DeclarationAssignmentStatementNode::~DeclarationAssignmentStatementNode() {
+	MSG("DELETING DECLARATIONASSIGNMENTSTATEMENTNODE");
+	//delete this->mIdentifierNode;
+	delete this->mExpressionNode;
+}
+void DeclarationAssignmentStatementNode::Interpret() {
+	MSG("    INTERPRETING DECLARATIONASSIGNMENTSTATEMENTNODE");
+	this->mIdentifierNode->DeclareVariable();
+	this->mIdentifierNode->SetValue(this->mExpressionNode->Evaluate());
+}
+void DeclarationAssignmentStatementNode::Code(InstructionsClass &machinecode) {
+	MSG("    CODING DECLARATIONASSIGNMENTSTATEMENTNODE");
+	this->mIdentifierNode->DeclareVariable();
+	this->mExpressionNode->CodeEvaluate(machinecode);
+	machinecode.PopAndStore(this->mIdentifierNode->GetIndex());
+}
+
 AssignmentStatementNode::AssignmentStatementNode(IdentifierNode * identifiernode, ExpressionNode * expressionnode)
 	: mIdentifierNode(identifiernode), mExpressionNode(expressionnode) {
 }
@@ -147,6 +168,26 @@ void MinusAssignmentStatementNode::Code(InstructionsClass &machinecode) {
 	this->mIdentifierNode->CodeEvaluate(machinecode);
 	this->mExpressionNode->CodeEvaluate(machinecode);
 	machinecode.PopPopSubPush();
+	machinecode.PopAndStore(this->mIdentifierNode->GetIndex());
+}
+
+TimesAssignmentStatementNode::TimesAssignmentStatementNode(IdentifierNode * identifiernode, ExpressionNode * expressionnode)
+	: AssignmentStatementNode(identifiernode, expressionnode) {
+}
+TimesAssignmentStatementNode::~TimesAssignmentStatementNode() {
+	MSG("    DELETING TIMESASSIGNMENTSTATEMENTNODE");
+	//delete this->mIdentifierNode;
+	//delete this->mExpressionNode;
+}
+void TimesAssignmentStatementNode::Interpret() {
+	MSG("    INTERPRETING TIMESASSIGNMENTSTATEMENTNODE");
+	this->mIdentifierNode->SetValue(this->mIdentifierNode->Evaluate() * this->mExpressionNode->Evaluate());
+}
+void TimesAssignmentStatementNode::Code(InstructionsClass &machinecode) {
+	MSG("    CODING MINUSASSIGNMENTSTATEMENTNODE");
+	this->mIdentifierNode->CodeEvaluate(machinecode);
+	this->mExpressionNode->CodeEvaluate(machinecode);
+	machinecode.PopPopMulPush();
 	machinecode.PopAndStore(this->mIdentifierNode->GetIndex());
 }
 

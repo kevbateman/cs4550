@@ -1,5 +1,6 @@
 #include "StateMachine.h"
 #include <iostream>
+#include <stdio.h>
 
 StateMachineClass::StateMachineClass()
 	: mCurrentState(START_STATE) {
@@ -82,9 +83,10 @@ StateMachineClass::StateMachineClass()
 	// != states
 	this->mLegalMoves[NOT_STATE][EQUAL_CHAR]			= NOTEQUAL_STATE;
 
-	// + and - states
+	// +, -, and * states
 	this->mLegalMoves[PLUS_STATE][EQUAL_CHAR]			= PLUSASSIGNMENT_STATE;
 	this->mLegalMoves[MINUS_STATE][EQUAL_CHAR]			= MINUSASSIGNMENT_STATE;
+	this->mLegalMoves[TIMES_STATE][EQUAL_CHAR]			= TIMESASSIGNMENT_STATE;
 
 	// First, initialize all states to correspond to the BAD token type.
 	// Then, reset the end states to correspond to the correct token types.
@@ -115,6 +117,7 @@ StateMachineClass::StateMachineClass()
 	this->mCorrespondingTokenTypes[NOT_STATE]				= NOT_TOKEN;
 	this->mCorrespondingTokenTypes[PLUSASSIGNMENT_STATE]	= PLUSASSIGNMENT_TOKEN;
 	this->mCorrespondingTokenTypes[MINUSASSIGNMENT_STATE]	= MINUSASSIGNMENT_TOKEN;
+	this->mCorrespondingTokenTypes[TIMESASSIGNMENT_STATE]	= TIMESASSIGNMENT_TOKEN;
 }
 
 MachineState StateMachineClass::UpdateState(

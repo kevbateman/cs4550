@@ -2,11 +2,12 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cstdlib>
 
 ScannerClass::ScannerClass(std::string string_input) 
 	: mLineNumber(1) {
 	MSG("INITIALIZING SCANNERCLASS OBJECT");
-	this->mFin.open(string_input);
+	this->mFin.open(string_input.c_str());
 
 	if (!this->mFin.is_open()) {
 		std::cout << "ERROR: file failed to open";
@@ -32,7 +33,8 @@ TokenClass ScannerClass::GetNextToken() {
 		lexeme += c;
 	} while (state != CANTMOVE_STATE);
 
-	lexeme.pop_back();
+	lexeme = lexeme.substr(0, lexeme.size() - 1);
+
 	if (c == '\n') {
 		this->mLineNumber--;
 	}

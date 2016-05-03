@@ -11,6 +11,7 @@ class StatementNode;
 class BlockNode;
 class StatementGroupNode;
 class DeclarationStatementNode;
+class DeclarationAssignmentStatementNode;
 class AssignmentStatementNode;
 class CoutStatementNode;
 class ExpressionNode;
@@ -22,7 +23,9 @@ class BinaryOperatorNode;
 class IfStatementNode;
 class WhileStatementNode;
 class PlusNode;
-class PlusEqualsNode;
+class PlusAssignmentStatementNode;
+class MinusAssignmentStatementNode;
+class TimesAssignmentStatementNode;
 class OrNode;
 class AndNode;
 
@@ -83,8 +86,19 @@ public:
 	~DeclarationStatementNode();
 	void Interpret();
 	void Code(InstructionsClass &machinecode);
-private:
+protected:
 	IdentifierNode * mIdentifierNode;
+};
+
+class DeclarationAssignmentStatementNode : public DeclarationStatementNode {
+public:
+	DeclarationAssignmentStatementNode(IdentifierNode * idenifiernode, ExpressionNode * expressionnode);
+	~DeclarationAssignmentStatementNode();
+	void Interpret();
+	void Code(InstructionsClass &machinecode);
+private:
+	//IdentifierNode * mIdentifierNode;
+	ExpressionNode * mExpressionNode;
 };
 
 class AssignmentStatementNode: public StatementNode {
@@ -110,6 +124,14 @@ class MinusAssignmentStatementNode : public AssignmentStatementNode {
 public:
 	MinusAssignmentStatementNode(IdentifierNode * identifiernode, ExpressionNode * expressionnode);
 	~MinusAssignmentStatementNode();
+	void Interpret();
+	void Code(InstructionsClass &machinecode);
+};
+
+class TimesAssignmentStatementNode : public AssignmentStatementNode {
+public:
+	TimesAssignmentStatementNode(IdentifierNode * identifiernode, ExpressionNode * expressionnode);
+	~TimesAssignmentStatementNode();
 	void Interpret();
 	void Code(InstructionsClass &machinecode);
 };
